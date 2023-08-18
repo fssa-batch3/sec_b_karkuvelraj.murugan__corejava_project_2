@@ -1,22 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>in.fssa</groupId>
+	<groupId>in.fwsa</groupId>
 	<artifactId>demoapp-core</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
-	    <sonar.projectkey>fssa-batch3_sec_b_karkuvelraj.murugan_corejava_project_2</sonar.projectkey>
-		<sonar.organization>fssa-batch3</sonar.organization>
+
+		<sonar.organization>suryapugal22</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -40,18 +38,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/io.github.cdimascio/java-dotenv -->
-		<dependency>
-			<groupId>io.github.cdimascio</groupId>
-			<artifactId>java-dotenv</artifactId>
-			<version>5.2.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>in.karkuvelrajmurugan</groupId>
-			<artifactId>aaha</artifactId>
-			<version>1.0.0</version>
-		</dependency>
 	</dependencies>
 
 
@@ -107,30 +93,30 @@
 					<artifactId>exec-maven-plugin</artifactId>
 					<version>3.1.0</version>
 					<configuration>
-						<mainClass>in.fssa.aaha.App</mainClass>
+						<mainClass>com.fssa.learnJava.project.taskapp.App</mainClass>
 					</configuration>
 				</plugin>
 
 				<plugin>
-					<groupId>org.jacoco</groupId>
-					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.8</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>prepare-agent</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>report</id>
-							<phase>prepare-package</phase>
-							<goals>
-								<goal>report</goal>
-							</goals>
-						</execution>
-					</executions>
+				    <groupId>org.jacoco</groupId>
+				    <artifactId>jacoco-maven-plugin</artifactId>
+				    <version>0.8.8</version>
+				    <executions>
+				        <execution>
+				            <goals>
+				                <goal>prepare-agent</goal>
+				            </goals>
+				        </execution>
+				        <execution>
+				            <id>report</id>
+				            <phase>prepare-package</phase>
+				            <goals>
+				                <goal>report</goal>
+				            </goals>
+				        </execution>
+				    </executions>
 				</plugin>
-
+				
 			</plugins>
 		</pluginManagement>
 
