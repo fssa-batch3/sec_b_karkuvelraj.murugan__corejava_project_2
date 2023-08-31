@@ -4,10 +4,18 @@ public abstract class ProductEntity implements Comparable<Product> {
 
 	private int id;
 	private String name;
-	private boolean isActive = true;
 	private String description;
+	private boolean isActive = true;
 	private int category_id;
+	private Price price;
 
+	public Price getPrice() {
+		return price;
+	}
+
+	public void setPrice(Price price) {
+		this.price = price;
+	}
 
 	public int getId() {
 		return id;
@@ -24,6 +32,7 @@ public abstract class ProductEntity implements Comparable<Product> {
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -39,6 +48,7 @@ public abstract class ProductEntity implements Comparable<Product> {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+
 	public int getCategory_id() {
 		return category_id;
 	}
@@ -49,11 +59,13 @@ public abstract class ProductEntity implements Comparable<Product> {
 
 	@Override
 	public String toString() {
-		return "ProductEntity [id=" + id + ", name=" + name + ", description=" +description + ", isActive=" + isActive + ", category_id=" + category_id + "]";
+		return "ProductEntity [id=" + id + ", name=" + name + ", description="
+				+ description + ", isActive=" + isActive + ", category_id=" + category_id + "]";
 	}
+
 	@Override
 	public int compareTo(Product o) {
-		
+		// TODO Auto-generated method stub
 		return 0;
 	}
 }

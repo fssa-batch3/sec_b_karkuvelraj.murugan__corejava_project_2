@@ -1,199 +1,113 @@
 package in.fssa.aaha.validator;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.regex.Pattern;
-
-import in.fssa.aaha.Exception.ValidationException;
+import in.fssa.aaha.dao.ProductDAO;
+import in.fssa.aaha.exception.DAOException;
+import in.fssa.aaha.exception.ValidationException;
 import in.fssa.aaha.model.Product;
-import in.fssa.aaha.util.ConnectionUtil;
 import in.fssa.aaha.util.StringUtil;
 
+/**
+ * Validator class for validating Product objects.
+ */
 public class Productvalidator {
-private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\s]*$";
-	   /**
-	    * 
-	    * @param product
-	    * @throws ValidationException
-	    */
-	public void validateProduct(Product product) throws ValidationException{
-		
-		if(product == null) {
+
+	/**
+	 * Validates a Product object for creation.
+	 *
+	 * @param product The Product object to validate.
+	 * @throws ValidationException If the Product object is invalid or conflicts
+	 *                             with existing data.
+	 */
+	public static void validate(Product product) throws ValidationException {
+		if (product == null) {
+			throw new ValidationException("Invalid input");
+		}
+
+		if (product.getCategory_id() <= 0) {
+			throw new ValidationException("Invalid Category Id");
+		}
+
+		StringUtil.rejectIfInvalidString(product.getName(), "Product name");
+		StringUtil.rejectIfInvalidString(product.getDescription(), "Product Description");
+		ProductDAO productDAO = new ProductDAO();
+
+		try {
+			productDAO = new ProductDAO();
+			boolean productExists = productDAO.isProductAlreadyExists(product.getName());
+			if (productExists) {
+				throw new ValidationException("Product name is already exists");
+			}
+		} catch (DAOException e) {
+			throw new ValidationException(e);
+		}
+
+	}
+
+	/**
+	 * Validates a Product object for update.
+	 *
+	 * @param id        The ID of the Product to update.
+	 * @param newUpdate The updated Product object.
+	 * @throws ValidationException If the updated Product object is invalid or
+	 *                             conflicts with existing data.
+	 */
+	public static void validateUpdate(int id, Product newUpdate) throws ValidationException {
+		if (newUpdate == null) {
 			throw new ValidationException("Invalid Product input");
 		}
-		
-		 validateName(product.getName());
-		
-		// business validation
-		Connection con = null;
-	     PreparedStatement ps = null;
-	     ResultSet rs = null;
-	     
-		try {
-			String query = "SELECT * FROM product WHERE name = ?";
-			con = ConnectionUtil.getConnection();
-         ps = con.prepareStatement(query);
-         ps.setString(1, product.getName());
-         rs = ps.executeQuery();
-         
-         if(rs.next()) {
-       	  throw new ValidationException("product already exists");		
-         }
-		}catch (SQLException e) {
-         e.printStackTrace();
-         System.out.println(e.getMessage());
-         throw new RuntimeException(e);
-     
-     } finally {
-         ConnectionUtil.close(con, ps);
-     }
-		
-		validateCategoryId(product.getCategory_id());
-		
-	}
-	  /**
-	   * 
-	   * @param name
-	   * @throws ValidationException
-	   */
-	public  void validateName(String name) throws ValidationException {
-        
-        StringUtil.rejectIfInvalidString(name, "Name");
-        
-        if (!Pattern.matches(NAME_PATTERN, name)) {
-            throw new ValidationException("Name does not match the pattern");
-        }
-    
-    }
-	
-	
-	
-	/**
-	 * 
-	 * @param productId
-	 * @throws ValidationException
-	 */
-	public void validateProductId1(int productId)throws ValidationException{
-		if(productId < 0) {
-			throw new ValidationException("Id cannot be negative or zero");
+
+		if (id <= 0) {
+			throw new ValidationException("Invalid Product id");
 		}
-	}
-	
-	/**
-	 * 
-	 * @param productId
-	 * @throws ValidationException
-	 */
-	public void validateProductId(int productId)throws ValidationException{
-		
-		if(productId <= 0) {
-			
-			throw new ValidationException("Id cannot be negative or zero");
+
+		StringUtil.rejectIfInvalidString(newUpdate.getName(), "Product Name");
+		StringUtil.rejectIfInvalidString(newUpdate.getDescription(), "Product Description");
+
+		ProductDAO productDao = null;
+		try {
+			productDao = new ProductDAO();
+			productDao.findById(id);
+
+		} catch (DAOException e) {
+			throw new ValidationException(e);
 		}
 		
-		 Connection con = null;
-	     PreparedStatement ps = null;
-	     ResultSet rs = null;
-	     
-		try {
-			String query = "SELECT * FROM product WHERE id = ?";
-			con = ConnectionUtil.getConnection();
-           ps = con.prepareStatement(query);
-           ps.setInt(1, productId);
-           rs = ps.executeQuery();
-           
-           if(rs.next()) {
-           	System.out.println("product exists");
-           }else {
-           	throw new ValidationException("product doesn't exist");
-           }		
-		} catch (SQLException e) {
-			
-           e.printStackTrace();
-           System.out.println(e.getMessage());
-           throw new RuntimeException(e);
-       
-       } finally {
-           ConnectionUtil.close(con, ps);
-       }
-	}
-	 /**
-	  * 
-	  * @param categoryId
-	  * @throws ValidationException
-	  */
-	public void validateCategoryId(int categoryId)throws ValidationException{
 		
-		 if (categoryId <= 0) {
-		        throw new ValidationException("Category ID cannot be negative or zero");
-		    }
-		 Connection con = null;
-	     PreparedStatement ps = null;
-	     ResultSet rs = null;
-	     
-		try {
-			String query = "SELECT * FROM category WHERE id = ?";
-			con = ConnectionUtil.getConnection();
-           ps = con.prepareStatement(query);
-           ps.setInt(1, categoryId);
-           rs = ps.executeQuery();
-           
-           if(rs.next()) {
-           	System.out.println("category exists");
-           }else {
-           	throw new ValidationException("category doesn't exist");
-           }		
-		} catch (SQLException e) {
-			
-           e.printStackTrace();
-           System.out.println(e.getMessage());
-           throw new RuntimeException(e);
-       
-       } finally {
-           ConnectionUtil.close(con, ps);
-       }
+
 	}
-    
+
 	/**
-	 * 
-	 * @param id
-	 * @param name
-	 * @throws ValidationException
+	 * Validates a Product ID for deletion.
+	 *
+	 * @param newId The ID to validate.
+	 * @throws ValidationException If the Product ID is invalid, not found, or has
+	 *                             already been removed.
 	 */
-	public void validateProductUpdate(int id, String name) throws ValidationException {
-	    if (id <= 0) {
-	        throw new ValidationException("Product ID cannot be negative or zero");
-	    }
+	public static void validateDeleteId(int newId) throws ValidationException {
 
-	    if (name == null || name.trim().isEmpty()) {
-	        throw new ValidationException("Product name cannot be null or empty");
-	    }
-	    
-	    // You might add more specific validation rules for 'name' if needed
+		if (newId <= 0) {
+			throw new ValidationException("Invalid Product id");
+		}
+		ProductDAO productDao = null;
+		try {
+			productDao = new ProductDAO();
+			productDao.findById(newId);
 
-	    Connection con = null;
-	    PreparedStatement ps = null;
-	    ResultSet rs = null;
+		} catch (DAOException e) {
+			throw new ValidationException(e);
+		}
 
-	    try {
-	        String query = "SELECT * FROM product WHERE id = ?";
-	        con = ConnectionUtil.getConnection();
-	        ps = con.prepareStatement(query);
-	        ps.setInt(1, id);
-	        rs = ps.executeQuery();
+		try {
+			productDao = new ProductDAO();
+			boolean val = productDao.isDeletedProduct(newId);
+			if (val) {
+				throw new ValidationException("This product has already been removed");
+			}
 
-	        if (!rs.next()) {
-	            throw new ValidationException("Product doesn't exist");
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        System.out.println(e.getMessage());
-	        throw new RuntimeException(e);
-	    } finally {
-	        ConnectionUtil.close(con, ps);
-	    }
+		} catch (DAOException e) {
+			throw new ValidationException(e);
+		}
+
 	}
 
 

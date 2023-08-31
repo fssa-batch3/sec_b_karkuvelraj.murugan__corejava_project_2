@@ -31,6 +31,14 @@ public abstract class CategoryEntity implements Comparable<Category> {
 		this.isActive = isActive;
 	}
 
+	public int getCategory_type_id() {
+		return category_type_id;
+	}
+
+	public void setCategory_type_id(int category_type_id) {
+		this.category_type_id = category_type_id;
+	}
+
 	@Override
 	public String toString() {
 		return "Category [id=" + id + ", name=" + name + ", isActive=" + isActive + ", category_type_id="

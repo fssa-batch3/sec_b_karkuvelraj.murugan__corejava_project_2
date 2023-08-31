@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import io.github.cdimascio.dotenv.Dotenv;
 
 public class ConnectionUtil {
 	/**
@@ -15,22 +14,26 @@ public class ConnectionUtil {
 	 * @return
 	 */
 	public static Connection getConnection() {
-		Dotenv env = Dotenv.load();
-		String url = env.get("DATABASE_HOSTNAME");
-		String username = env.get("DATABASE_USERNAME");
-		String password = env.get("DATABASE_PASSWORD");
-		Connection connection = null;
-		
+		String url;
+		String userName;
+		String passWord;
+
+		url = System.getenv("DATABASE_HOSTNAME");
+		userName = System.getenv("DATABASE_USERNAME");
+		passWord = System.getenv("DATABASE_PASSWORD");
+
+		Connection conn = null;
+
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(url, userName, passWord);
 
-       connection = DriverManager.getConnection(url, username,password);
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		return connection;
+
+		return conn;
 	}
 	/**
 	 * 

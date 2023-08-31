@@ -1,13 +1,12 @@
 package in.fssa.aaha.interfaces;
-import java.util.Set;
-
+import in.fssa.aaha.exception.DAOException;
+import in.fssa.aaha.exception.ValidationException;
 import in.fssa.aaha.model.Product;
 
-import java.util.Set;
+public interface ProductInterface extends Base<Product> {
 
-public interface Productinterface {
-    Set<Product> listAllProducts();
-    Set<Product> listAllProductsByCategoryId(int category_id);
-    Product findProductDetailsByProductId(int productId);
-    void updateProduct(int productId, String name, int categoryId);
+	public abstract int create(Product newUser) throws Exception;
+
+	public abstract Product findById(int id) throws ValidationException, DAOException;
+
 }
