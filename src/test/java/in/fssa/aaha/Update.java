@@ -12,14 +12,13 @@ import in.fssa.aaha.service.PriceService;
 
 public class Update {
 
-	public class PriceServiceTest {
 
 		@Test
 		public void testUpdatePriceWithValidInput() {
 			PriceService priceService = new PriceService();
 
 			Price price = new Price();
-			price.setPrice(generateRandomPriceInRange(50, 10000));
+			price.setPrice(generateRandomPriceInRange(100, 10000));
 
 			assertDoesNotThrow(() -> {
 				priceService.updatePrice(2, price);
@@ -29,7 +28,7 @@ public class Update {
 		private int generateRandomPriceInRange(int min, int max) {
 			return (int) (Math.random() * (max - min + 1)) + min;
 		}
-	}
+	
 
 	@Test
 	public void testUpdatePriceWithNullObjectPrice() {
@@ -44,7 +43,7 @@ public class Update {
 
 		String exceptedMessage = "Invalid Price input";
 		String actualMessage = exception.getMessage();
-
+      System.out.println(actualMessage);
 		assertTrue(exceptedMessage.equals(actualMessage));
 	}
 
@@ -59,10 +58,9 @@ public class Update {
 			priceService.updatePrice(2, price);
 		});
 
-		String expectedMessage = "Price should be between a minimum of 50 and a maximum of 50000.";
+		String expectedMessage = "Price should be between a minimum of 100 and a maximum of 10000.";
 		String actualMessage = exception.getMessage();
-		 System.out.println("Expected: " + expectedMessage);
-		 System.out.println("Actual: " + actualMessage);
+		 System.out.println(actualMessage);
 
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
@@ -72,16 +70,16 @@ public class Update {
 		PriceService priceService = new PriceService();
 
 		Price price = new Price();
-		price.setPrice(50002);
+		price.setPrice(10002);
 		// newUser.setActive(true);
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			priceService.updatePrice(2, price);
 		});
 
-		String expectedMessage = "Price should be between a minimum of 50 and a maximum of 50000.";
+		String expectedMessage = "Price should be between a minimum of 100 and a maximum of 10000.";
 		String actualMessage = exception.getMessage();
 //		System.out.println("Expected: " + expectedMessage);
-//		System.out.println("Actual: " + actualMessage);
+		System.out.println(actualMessage);
 
 		assertTrue(expectedMessage.equals(actualMessage));
 	}

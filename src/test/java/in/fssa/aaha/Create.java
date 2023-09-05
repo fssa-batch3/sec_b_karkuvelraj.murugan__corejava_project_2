@@ -16,7 +16,7 @@ import in.fssa.aaha.service.ProductService;
 
 public class Create {
 	
-//	private String generateRandomProductName() {
+//  	private String generateRandomProductName() {
 //		String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 //		StringBuilder dishName = new StringBuilder();
 //		for (int i = 0; i < 10; i++) {
@@ -33,7 +33,7 @@ public class Create {
 		ProductService productService = new ProductService();
 
 		Product product = new Product();
-		product.setName("DOFVNEUI");
+		product.setName("DOFVNEU");
 		product.setCategory_id(1);
 		product.setDescription("Men  Fit Solid Casual Shit");
 		product.setActive(true);

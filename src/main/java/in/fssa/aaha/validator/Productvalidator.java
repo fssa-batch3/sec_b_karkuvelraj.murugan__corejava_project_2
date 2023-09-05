@@ -24,7 +24,7 @@ public class Productvalidator {
 		}
 
 		if (product.getCategory_id() <= 0) {
-			throw new ValidationException("Invalid Category Id");
+			throw new ValidationException("`");
 		}
 
 		StringUtil.rejectIfInvalidString(product.getName(), "Product name");
@@ -75,7 +75,27 @@ public class Productvalidator {
 		
 
 	}
+	/**
+	 * Validates a Product ID.
+	 *
+	 * @param newId The ID to validate.
+	 * @throws ValidationException If the Product ID is invalid or not found.
+	 */
+	public static void validateId(int newId) throws ValidationException {
 
+		if (newId <= 0) {
+			throw new ValidationException("Invalid Product id");
+		}
+		ProductDAO productDAO = null;
+		try {
+			productDAO = new ProductDAO();
+			productDAO.findById(newId);
+
+		} catch (DAOException e) {
+			throw new ValidationException(e);
+		}
+
+	}
 	/**
 	 * Validates a Product ID for deletion.
 	 *

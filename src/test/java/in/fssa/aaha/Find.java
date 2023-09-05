@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import in.fssa.aaha.exception.DAOException;
+import in.fssa.aaha.exception.ServiceException;
 import in.fssa.aaha.exception.ValidationException;
 import in.fssa.aaha.model.Product;
 import in.fssa.aaha.service.CategoryService;
@@ -35,7 +36,7 @@ public class Find {
 		ProductService productService = new ProductService();
 
 		assertDoesNotThrow(() -> {
-			System.out.println(productService.listAllTheProductsByCategoryId(2));
+			System.out.println(productService.listAllTheProductsByCategoryId(1));
 		});
 	}
 
@@ -47,9 +48,9 @@ public class Find {
 			productService.listAllTheProductsByCategoryId(-20);
 		});
 
-		String exceptedMessage = "Invalid Category id";
+		String exceptedMessage = "Invalid Category Id";
 		String actualMessage = exception.getMessage();
-
+        System.out.println(actualMessage);
 		assertTrue(exceptedMessage.equals(actualMessage));
 	}
 
@@ -57,7 +58,7 @@ public class Find {
 	public void testFindProductWithNonExistentCategoryId() {
 		ProductService productService = new ProductService();
 
-		Exception exception = assertThrows(ValidationException.class, () -> {
+		Exception exception = assertThrows(ServiceException.class, () -> {
 			productService.listAllTheProductsByCategoryId(50);
 		});
 
@@ -70,6 +71,31 @@ public class Find {
 		assertTrue(actualMessage.contains(expectedMessage));
 	}
 	
+	@Test
+	public void testFindProductWithValidId() {
+		ProductService productService = new ProductService();
+
+		// newUser.setActive(true);
+		assertDoesNotThrow(() -> {
+			System.out.println(productService.findById(20));
+		});
+
+	}
+
+	@Test
+	public void testFindProductWithInValidNegativeId() {
+		ProductService productService = new ProductService();
+
+		Exception exception = assertThrows(Exception.class, () -> {
+			productService.findById(-22);
+		});
+
+		String exceptedMessage = "Invalid Product id";
+		String actualMessage = exception.getMessage();
+       System.out.println(actualMessage);
+		assertTrue(exceptedMessage.equals(actualMessage));
+	}
+
 	
 
 }

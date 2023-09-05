@@ -10,21 +10,15 @@ import in.fssa.aaha.model.Price;
  */
 public class PriceValidator {
 
-	/**
-	 * Validates a Price object for creation.
-	 *
-	 * @param productId The ID of the associated product.
-	 * @param price     The Price object to validate.
-	 * @throws ValidationException If the Price object is invalid.
-	 */
+   public static void validateId(int productId) throws ValidationException {
+	   if (productId <= 0) {
+			throw new ValidationException("Invalid Product ID");
+		}
+   }
 					
-	public static void validate(int productId, Price price) throws ValidationException {
+	public static void validate(Price price) throws ValidationException {
 		if (price == null) {
 			throw new ValidationException("Invalid Price input");
-		}
-
-		if (productId <= 0) {
-			throw new ValidationException("Invalid Product ID");
 		}
 
 		if (!(price.getPrice() >= 100 && price.getPrice() <= 10000)) {

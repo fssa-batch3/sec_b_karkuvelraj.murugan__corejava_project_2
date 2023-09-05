@@ -99,6 +99,40 @@ public class ProductDAO implements ProductInterface {
 
 	}
 	
+	
+	
+	public Product findById(int id) throws DAOException {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Product product = null;
+		try {
+			String query = "SELECT id, name, isActive, description FROM product WHERE id=?";
+			conn = ConnectionUtil.getConnection();
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, id);
+			rs = ps.executeQuery();
+
+			if (!rs.next()) {
+				throw new DAOException("The product is not listed among the available products");
+			}
+
+			product = new Product();
+			product.setId(rs.getInt("id"));
+			product.setName(rs.getString("name"));
+			product.setActive(rs.getBoolean("isActive"));
+			product.setDescription(rs.getString("description"));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			throw new DAOException(e);
+		} finally {
+			ConnectionUtil.close(conn, ps, rs); // Close the ResultSet here
+		}
+		return product;
+	}
+	
 	public boolean isProductAlreadyExists(String name) throws DAOException {
 
 		Connection conn = null;
@@ -137,7 +171,7 @@ public class ProductDAO implements ProductInterface {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
-			String query = "UPDATE product SET is_active=? WHERE is_active=1 AND id=?";
+			String query = "UPDATE product SET isActive=? WHERE isActive=1 AND id=?";
 			conn = ConnectionUtil.getConnection();
 			ps = conn.prepareStatement(query);
 			ps.setBoolean(1, false);
@@ -175,7 +209,7 @@ public class ProductDAO implements ProductInterface {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			String query = "SELECT * From product WHERE is_active=1 AND category_id=?";
+			String query = "SELECT * From product WHERE isActive= 1 AND category_id=?";
 			conn = ConnectionUtil.getConnection();
 			ps = conn.prepareStatement(query);
 			ps.setInt(1, categoryId);
@@ -187,11 +221,10 @@ public class ProductDAO implements ProductInterface {
 				Product product = new Product();
 				product.setId(rs.getInt("id"));
 				product.setName(rs.getString("name"));
-				product.setActive(rs.getBoolean("is_active"));
+				product.setActive(rs.getBoolean("isActive"));
 				product.setDescription(rs.getString("description"));
 				product.setCategory_id(rs.getInt("category_id"));
 				ProductList.add(product);
-
 			}
 
 		} catch (SQLException e) {
@@ -261,7 +294,7 @@ public class ProductDAO implements ProductInterface {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			String query = "SELECT * From product WHERE is_active=0 AND id=?";
+			String query = "SELECT * From product WHERE isActive=0 AND id=?";
 			conn = ConnectionUtil.getConnection();
 			ps = conn.prepareStatement(query);
 			ps.setInt(1, productId);
@@ -274,12 +307,6 @@ public class ProductDAO implements ProductInterface {
 		} finally {
 			ConnectionUtil.close(conn, ps, rs);
 		}
-	}
-
-	@Override
-	public Product findById(int id) throws ValidationException, DAOException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 

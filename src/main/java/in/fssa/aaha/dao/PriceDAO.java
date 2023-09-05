@@ -112,6 +112,42 @@ public class PriceDAO implements PriceInterface {
 
 		return priceId;
 	}
+	
+	
+	
+	
+	public Price findPriceByProductId(int productId) throws DAOException {
+		Price price ;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			
+			String query = "SELECT * FROM product_price where product_id=? AND end_date = NULL";
+			conn = ConnectionUtil.getConnection();
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, productId);
+			rs = ps.executeQuery();
+			if (!rs.next()) {
+				throw new DAOException("This product price is not available");
+			}
+
+			 price = new Price();
+			price.setId(rs.getInt("id"));
+			price.setPrice(rs.getInt("price"));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			throw new DAOException(e);
+		} finally {
+
+			ConnectionUtil.close(conn, ps , rs);
+		}
+
+		return price;
+	}
+
 
 	/**
 	 * 

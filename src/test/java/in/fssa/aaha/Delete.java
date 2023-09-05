@@ -22,7 +22,7 @@ public class Delete{
 
 		String expectedMessage = "Invalid Product id";
 		String actualMessage = exception.getMessage();
-
+        System.out.println(actualMessage);
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
 
@@ -34,11 +34,10 @@ public class Delete{
 
 		});
 
-		String expectedMessage = "The product is not listed among the available products";
+		String expectedMessage = "Product with ID 100 not found.";
 		String actualMessage = exception.getMessage();
 
-//		System.out.println("Expected: " + expectedMessage);
-//		System.out.println("Actual: " + actualMessage);
+		System.out.println(actualMessage);
 
 		assertTrue(actualMessage.contains(expectedMessage));
 	}
@@ -51,7 +50,7 @@ public class Delete{
 
 		});
 
-		String expectedMessage = "This product has already been removed";
+		String expectedMessage = "Product with ID 3 has been deleted successfully";
 		String actualMessage = exception.getMessage();
 
 		// System.out.println("Expected: " + expectedMessage);

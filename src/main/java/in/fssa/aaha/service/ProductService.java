@@ -42,6 +42,7 @@ public class ProductService {
 			PriceService priceService = new PriceService();
 			priceService.create(productId, productPrice);
 		} catch (DAOException e) {
+			e.printStackTrace();
 			throw new ServiceException(e);
 		}
 	}
@@ -54,11 +55,13 @@ public class ProductService {
 	public List<Product> ListAllProducts() {
 		ProductDAO productDao = new ProductDAO();
 		List<Product> allProducts = productDao.ListAllProducts();
-//		Iterator<Product> iterator = productList.iterator();
-//		while (iterator.hasNext()) {
-//			Product product = iterator.next();
-//			System.out.println(product);
-//		}
+		PriceService priceService = new PriceService();
+		/*
+		 * for(Product product :allProducts) { Price price =
+		 * priceService.findByProductId(product.getId()); product.setPrice(price); }
+		 */
+
+		// get price
 		return allProducts;
 	}
 
@@ -78,6 +81,7 @@ public class ProductService {
 			Productvalidator.validateUpdate(id, newUpdate);
 			productDao.update(id, newUpdate);
 		} catch (DAOException e) {
+			e.printStackTrace();
 			throw new ServiceException(e);
 		}
 	}
@@ -97,8 +101,23 @@ public class ProductService {
 			Productvalidator.validateDeleteId(id);
 			productDao.delete(id);
 		} catch (DAOException e) {
+			e.printStackTrace();
 			throw new ServiceException(e);
 		}
+	}
+	public Product findById(int newId) throws ServiceException, ValidationException {
+		Product product = null;
+		ProductDAO productDao = null;
+		try {
+			productDao = new ProductDAO();
+			Productvalidator.validateId(newId);
+			product = productDao.findById(newId);
+//			int price = new PriceService().getPrice(newId);
+//			product.setPrice(price);
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+		}
+		return product;
 	}
 
 	/**
@@ -117,6 +136,7 @@ public class ProductService {
 			productDao = new ProductDAO();  
 			product = productDao.listAllTheProductsByCategoryId(id);
 		} catch (DAOException e) {
+			e.printStackTrace();
 			throw new ServiceException(e);
 		}
 		return product;
