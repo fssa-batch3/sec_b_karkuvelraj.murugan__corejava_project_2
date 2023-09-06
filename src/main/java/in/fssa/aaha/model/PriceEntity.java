@@ -11,6 +11,4 @@ public class PriceEntity {
 		this.price = price;
 	}
 
-		
-	}
-
+}

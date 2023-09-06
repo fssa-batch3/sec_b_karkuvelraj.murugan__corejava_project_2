@@ -7,7 +7,8 @@ public abstract class ProductEntity implements Comparable<Product> {
 	private String description;
 	private boolean isActive = true;
 	private int category_id;
-	private Price price;
+	private Price price = new Price();
+	
 
 	public Price getPrice() {
 		return price;
@@ -60,7 +61,7 @@ public abstract class ProductEntity implements Comparable<Product> {
 	@Override
 	public String toString() {
 		return "ProductEntity [id=" + id + ", name=" + name + ", description="
-				+ description + ", isActive=" + isActive + ", category_id=" + category_id + "]";
+				+ description + ", isActive=" + isActive + ", category_id=" + category_id + ",Price+" + price+ "]";
 	}
 
 	@Override

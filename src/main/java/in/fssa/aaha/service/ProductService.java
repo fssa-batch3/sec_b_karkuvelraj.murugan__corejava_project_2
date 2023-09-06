@@ -7,7 +7,13 @@ import in.fssa.aaha.exception.DAOException;
 import in.fssa.aaha.exception.ServiceException;
 import in.fssa.aaha.exception.ValidationException;
 import in.fssa.aaha.model.Product;
+import in.fssa.aaha.model.ProductEntity;
+
 import in.fssa.aaha.model.Price;
+import in.fssa.aaha.model.PriceEntity;
+
+import in.fssa.aaha.service.PriceService;
+
 import in.fssa.aaha.validator.Productvalidator;
 
 /**
@@ -15,15 +21,7 @@ import in.fssa.aaha.validator.Productvalidator;
  */
 public class ProductService {
 
-	/**
-	 * Creates a new product.
-	 *
-	 * @param newProduct The new product to create.
-	 * @throws ServiceException    If an error occurs while interacting with the
-	 *                             database.
-	 * @throws ValidationException If the provided data is not valid for creating a
-	 *                             product.
-	 */
+
 	public void create(Product newProduct) throws ServiceException, ValidationException {
 		try {
 			ProductDAO productDao = new ProductDAO(); // create instance for dao
@@ -40,41 +38,39 @@ public class ProductService {
 
 			int productId = productDao.create(newProduct);
 			PriceService priceService = new PriceService();
-			priceService.create(productId, productPrice);
+			priceService.createPrice(productId, priceValue);
 		} catch (DAOException e) {
 			e.printStackTrace();
 			throw new ServiceException(e);
 		}
+
 	}
 
 	/**
 	 * Retrieves a list of all products.
 	 *
 	 * @return A list of Product objects.
+	 * @throws ValidationException 
+	 * @throws ServiceException 
 	 */
-	public List<Product> ListAllProducts() {
+	public List<Product> ListAllProducts() throws ServiceException, ValidationException {
 		ProductDAO productDao = new ProductDAO();
 		List<Product> allProducts = productDao.ListAllProducts();
 		PriceService priceService = new PriceService();
-		/*
-		 * for(Product product :allProducts) { Price price =
-		 * priceService.findByProductId(product.getId()); product.setPrice(price); }
-		 */
+		
+		  for(Product product :allProducts) {
+			  
+			  Price price = priceService.getPrice(product.getId()); 
+			  product.setPrice(price); 
+//			  System.out.println(product.toString());
+		  }
+		 
 
 		// get price
 		return allProducts;
 	}
 
-	/**
-	 * Updates a product by its ID.
-	 *
-	 * @param id        The ID of the product to update.
-	 * @param newUpdate The updated product object.
-	 * @throws ServiceException    If an error occurs while interacting with the
-	 *                             database.
-	 * @throws ValidationException If the provided data is not valid for updating
-	 *                             the product.
-	 */
+	
 	public void update(int id, Product newUpdate) throws ServiceException, ValidationException {
 		try {
 			ProductDAO productDao = new ProductDAO();
@@ -112,8 +108,16 @@ public class ProductService {
 			productDao = new ProductDAO();
 			Productvalidator.validateId(newId);
 			product = productDao.findById(newId);
-//			int price = new PriceService().getPrice(newId);
-//			product.setPrice(price);
+			
+			
+//			Price price = new Price();
+//			price.getPrice();
+//			PriceService prser = new PriceService();
+//			prser.getPrice(newId);
+			 Price price = new PriceService().getPrice(newId); 
+			product.setPrice(price);
+//		  System.out.println(price);
+
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}

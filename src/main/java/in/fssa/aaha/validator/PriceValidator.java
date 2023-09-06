@@ -10,56 +10,55 @@ import in.fssa.aaha.model.Price;
  */
 public class PriceValidator {
 
-   public static void validateId(int productId) throws ValidationException {
-	   if (productId <= 0) {
-			throw new ValidationException("Invalid Product ID");
-		}
-   }
-					
-	public static void validate(Price price) throws ValidationException {
-		if (price == null) {
-			throw new ValidationException("Invalid Price input");
-		}
 
-		if (!(price.getPrice() >= 100 && price.getPrice() <= 10000)) {
-			throw new ValidationException("Price should be between a minimum of 100 and a maximum of 10000.");
-		}
-	}
-
-	/**
-	 * Validates a Price object for update.
-	 *
-	 * @param productId The ID of the associated product.
-	 * @param newPrice  The updated Price object to validate.
-	 * @throws ValidationException If the Price object is invalid or conflicts with
-	 *                             existing data.
-	 */
-	public static void validateUpdate(int productId, Price newPrice) throws ValidationException {
-		if (newPrice == null) {
-			throw new ValidationException("Invalid Price input");
-		}
+	public static void validate(int productId, int price) throws ValidationException {
+		
 
 		if (productId <= 0) {
 			throw new ValidationException("Invalid Product ID");
 		}
 
-		if (newPrice.getPrice() <= 100 || newPrice.getPrice() >= 10000) {
+		if (!(price >= 100 && price <= 10000)) {
+			throw new ValidationException("Price should be between a minimum of 100 and a maximum of 10000.");
+		}
+	}
+
+
+	public static void validateUpdate(int productId, int newPrice) throws ValidationException {
+//		if (newPrice == null) {
+//			throw new ValidationException("Invalid Price input");
+//		}
+
+		if (productId <= 0) {
+			throw new ValidationException("Invalid Product ID");
+		}
+
+		if ( newPrice <= 100 || newPrice >= 10000) {
 			throw new ValidationException("Price should be between a minimum of 100 and a maximum of 10000.");
 		}
 
-		PriceDAO priceDao = null;
+		PriceDAO priceDAO = null;
 		try {
-			priceDao = new PriceDAO();
-			priceDao.isProductExists(productId);
+			priceDAO = new PriceDAO();
+			priceDAO.isProductExists(productId);
 		} catch (DAOException e) {
 			throw new ValidationException(e);
 		}
 
+	
+	}
+
+	public static void validateProductId(int productId) throws ValidationException {
+		if (productId <= 0) {
+			throw new ValidationException("Invalid Product ID");
+		}
+		PriceDAO priceDAO = null;
 		try {
-			priceDao = new PriceDAO();
-			priceDao.isPriceAlreadyExists(productId, newPrice);
+			priceDAO = new PriceDAO();
+			priceDAO.isProductExists(productId);
 		} catch (DAOException e) {
 			throw new ValidationException(e);
 		}
+		
 	}
 }

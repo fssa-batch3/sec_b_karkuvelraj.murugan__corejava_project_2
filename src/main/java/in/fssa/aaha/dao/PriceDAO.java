@@ -14,24 +14,16 @@ import in.fssa.aaha.util.ConnectionUtil;
 
 public class PriceDAO implements PriceInterface {
 
-	/**
-	 * Creates a new price entry for a product in the database.
-	 *
-	 * @param productId The ID of the product for which the price is being created.
-	 * @param newPrice  The Price object representing the new price.
-	 * @param dateTime  The timestamp representing the start date of the new price.
-	 * @throws DAOException     if an error occurs while accessing the database.
-	 * @throws RuntimeException if a database access error occurs.
-	 */
+
 	@Override
-	public void create(int productId, Price newPrice, Timestamp dateTime) throws DAOException {
+	public void create(int productId, int newPrice, Timestamp dateTime) throws DAOException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
 			String query = "INSERT INTO product_price (price, product_id, start_date) VALUES (?,?,?)";
 			conn = ConnectionUtil.getConnection();
 			ps = conn.prepareStatement(query);
-			ps.setInt(1, newPrice.getPrice());
+			ps.setInt(1, newPrice);
 			ps.setInt(2, productId);
 			ps.setTimestamp(3, dateTime);
 			ps.executeUpdate();
@@ -45,13 +37,7 @@ public class PriceDAO implements PriceInterface {
 		}
 	}
 
-	/**
-	 * Checks if a product with the given ID exists in the database.
-	 *
-	 * @param productId The ID of the product to check.
-	 * @throws DAOException     if the product is not available in the product list.
-	 * @throws RuntimeException if a database access error occurs.
-	 */
+
 	public void isProductExists(int productId) throws DAOException {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -116,14 +102,14 @@ public class PriceDAO implements PriceInterface {
 	
 	
 	
-	public Price findPriceByProductId(int productId) throws DAOException {
+	public Price getPriceByProductId(int productId) throws DAOException {
 		Price price ;
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
 			
-			String query = "SELECT * FROM product_price where product_id=? AND end_date = NULL";
+			String query = "SELECT * FROM product_price where product_id=? AND end_date IS NULL";
 			conn = ConnectionUtil.getConnection();
 			ps = conn.prepareStatement(query);
 			ps.setInt(1, productId);
@@ -132,7 +118,7 @@ public class PriceDAO implements PriceInterface {
 				throw new DAOException("This product price is not available");
 			}
 
-			 price = new Price();
+			price = new Price();
 			price.setId(rs.getInt("id"));
 			price.setPrice(rs.getInt("price"));
 
@@ -183,15 +169,7 @@ public class PriceDAO implements PriceInterface {
 		}
 	}
 
-	/**
-	 * Checks if a price entry with the same product ID and price value already
-	 * exists in the database and has no end date set.
-	 *
-	 * @param productId The ID of the product to check for.
-	 * @param newPrice  The new price object to check for duplication.
-	 * @throws DAOException If an error occurs while interacting with the database
-	 *                      or if a duplicate price entry is found.
-	 */
+
 	public void isPriceAlreadyExists(int productId, Price newPrice) throws DAOException {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -213,5 +191,7 @@ public class PriceDAO implements PriceInterface {
 			throw new DAOException(e);
 		}
 	}
+
+	
 
 }

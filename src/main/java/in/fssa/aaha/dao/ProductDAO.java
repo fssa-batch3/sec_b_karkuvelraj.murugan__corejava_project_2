@@ -74,7 +74,7 @@ public class ProductDAO implements ProductInterface {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
-			String query = "UPDATE product SET  description=?, name=? WHERE is_active=1 AND id=?";
+			String query = "UPDATE product SET  description=?, name=? WHERE isActive=1 AND id=?";
 			conn = ConnectionUtil.getConnection();
 			ps = conn.prepareStatement(query);
 			ps.setString(1, updateProduct.getDescription());
@@ -122,6 +122,7 @@ public class ProductDAO implements ProductInterface {
 			product.setName(rs.getString("name"));
 			product.setActive(rs.getBoolean("isActive"));
 			product.setDescription(rs.getString("description"));
+//			product.setPrice(rs.getInt(id));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -266,7 +267,7 @@ public class ProductDAO implements ProductInterface {
 				product.setDescription(rs.getString("description"));
 				product.setCategory_id(rs.getInt("category_id"));
 				product.setActive(rs.getBoolean("isActive"));
-				
+//				product.setPrice(rs.getInt(""));
 				
 				allProducts.add(product);
 			}

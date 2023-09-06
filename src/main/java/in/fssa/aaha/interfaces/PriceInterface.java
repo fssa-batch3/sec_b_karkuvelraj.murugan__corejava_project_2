@@ -5,6 +5,10 @@ import in.fssa.aaha.model.Price;
 
 public interface PriceInterface {
 
-	public void create(int ProductId, Price newPrice, Timestamp dateTime) throws Exception;
+	
 
-}
+		public void create(int ProductId, int newPrice, Timestamp dateTime) throws Exception;
+
+		
+		
+	}

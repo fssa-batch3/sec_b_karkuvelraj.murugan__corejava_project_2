@@ -33,13 +33,13 @@ public class Create {
 		ProductService productService = new ProductService();
 
 		Product product = new Product();
-		product.setName("DOFVNEU");
+		product.setName("DOFVE");
 		product.setCategory_id(1);
 		product.setDescription("Men  Fit Solid Casual Shit");
 		product.setActive(true);
 		PriceService priceService = new PriceService();
 		Price price = new Price();
-		price.setPrice(2000);
+		price.setPrice(200);
 		product.setPrice(price);
 		 assertDoesNotThrow(() -> {
 			productService.create(product);
@@ -278,7 +278,7 @@ public class Create {
 		ProductService productService = new ProductService();
 
 		Product product = new Product();
-		product.setName("SADUYGHV");
+		product.setName("AUYGHV");
 		product.setCategory_id(1);
 		product.setDescription("Men Regular Fit Solid Shirt");
 		product.setActive(true);
@@ -292,7 +292,7 @@ public class Create {
 			productService.create(product);
 		});
 
-		String exceptedMessage = "Price should be between a minimum of 50 and a maximum of 10000";
+		String exceptedMessage = "Price should be between a minimum of 100 and a maximum of 10000";
 		String actualMessage = exception.getMessage();
 		System.out.println(actualMessage);
 		assertTrue(exceptedMessage.equals(actualMessage));
