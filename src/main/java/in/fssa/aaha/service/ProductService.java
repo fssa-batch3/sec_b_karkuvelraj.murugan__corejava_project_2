@@ -37,6 +37,7 @@ public class ProductService {
 			}
 
 			int productId = productDao.create(newProduct);
+			
 			PriceService priceService = new PriceService();
 			priceService.createPrice(productId, priceValue);
 		} catch (DAOException e) {
@@ -76,6 +77,12 @@ public class ProductService {
 			ProductDAO productDao = new ProductDAO();
 			Productvalidator.validateUpdate(id, newUpdate);
 			productDao.update(id, newUpdate);
+			
+			PriceService priceservice = new PriceService();
+			int price =newUpdate.getPrice().getPrice();
+			
+			priceservice.updateProductPrice(id,price);
+			
 		} catch (DAOException e) {
 			e.printStackTrace();
 			throw new ServiceException(e);

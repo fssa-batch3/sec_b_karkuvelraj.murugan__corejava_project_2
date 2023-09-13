@@ -32,7 +32,7 @@ public class Find {
 	
 //	category 
 	@Test
-	public void testFindAllProductByCategoryId() {
+	public void FindAllProductByCategoryId() {
 		ProductService productService = new ProductService();
 
 		assertDoesNotThrow(() -> {

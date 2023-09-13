@@ -16,14 +16,6 @@ import in.fssa.aaha.util.ConnectionUtil;
 public class ProductDAO implements ProductInterface {
 
 
-	/**
-	 * Creates a new product entry in the database.
-	 *
-	 * @param newProduct The Product object representing the new product.
-	 * @return The ID of the newly created product.
-	 * @throws DAOException     if an error occurs while accessing the database.
-	 * @throws RuntimeException if a database access error occurs.
-	 */
 	@Override
 	public int create(Product newProduct) throws DAOException {
 
@@ -59,16 +51,6 @@ public class ProductDAO implements ProductInterface {
 
 
 	
-
-	/**
-	 * Updates a product's information in the database.
-	 *
-	 * @param id            The ID of the product to update.
-	 * @param updateProduct The Product object representing the updated product
-	 *                      information.
-	 * @throws DAOException     if an error occurs while accessing the database.
-	 * @throws RuntimeException if a database access error occurs.
-	 */
 	@Override
 	public void update(int id, Product updateProduct) throws DAOException {
 		Connection conn = null;
@@ -235,8 +217,8 @@ public class ProductDAO implements ProductInterface {
 		} finally {
 			ConnectionUtil.close(conn, ps, rs);
 		}
-
-		return ProductList;
+      System.out.println(ProductList);
+	return ProductList;
 
 	}
 	

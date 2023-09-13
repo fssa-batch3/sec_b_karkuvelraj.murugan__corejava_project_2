@@ -65,7 +65,7 @@ public class CategoryService {
 	 *                             database.
 	 * @throws ValidationException If the provided category type ID is not valid.
 	 */
-	public List<Category> findCategoriesByCategoryId(int categoryTypeId) throws ServiceException, ValidationException {
+s	public List<Category> findCategoriesByCategoryId(int categoryTypeId) throws ServiceException, ValidationException {
 		CategoryDAO categoryDao = null;
 		List<Category> categoryList = null;
 		try {
