@@ -5,6 +5,8 @@ public abstract class ProductEntity implements Comparable<Product> {
 	private int id;
 	private String name;
 	private String description;
+	private String size;
+	private String image;
 	private boolean isActive = true;
 	private int category_id;
 	private Price price = new Price();
@@ -16,7 +18,21 @@ public abstract class ProductEntity implements Comparable<Product> {
 
 	public void setPrice(Price price) {
 		this.price = price;
+		
 	}
+	public void setSize(String size) {
+		this.size = size;
+	}
+	public String  getSize() {
+		return size;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public String  getImage() {
+		return image;
+	}
+
 
 	public int getId() {
 		return id;

@@ -1,4 +1,6 @@
 package in.fssa.aaha.service;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,23 +23,21 @@ import in.fssa.aaha.validator.Productvalidator;
  */
 public class ProductService {
 
-
 	public void create(Product newProduct) throws ServiceException, ValidationException {
 		try {
 			ProductDAO productDao = new ProductDAO(); // create instance for dao
-			Productvalidator.validate(newProduct);    //validate the product
+			Productvalidator.validate(newProduct); // validate the product
 
-			Price productPrice = newProduct.getPrice();   // get price from product entity
-			int priceValue = productPrice.getPrice();     //store the price
+			Price productPrice = newProduct.getPrice(); // get price from product entity
+			int priceValue = productPrice.getPrice(); // store the price
 
-			
 			// validate the price between 100 and 10000
 			if (priceValue <= 100 || priceValue >= 10000) {
 				throw new ValidationException("Price should be between 100 and  10000.");
 			}
 
 			int productId = productDao.create(newProduct);
-			
+
 			PriceService priceService = new PriceService();
 			priceService.createPrice(productId, priceValue);
 		} catch (DAOException e) {
@@ -51,44 +51,40 @@ public class ProductService {
 	 * Retrieves a list of all products.
 	 *
 	 * @return A list of Product objects.
-	 * @throws ValidationException 
-	 * @throws ServiceException 
+	 * @throws ValidationException
+	 * @throws ServiceException
 	 */
 	public List<Product> ListAllProducts() throws ServiceException, ValidationException {
 		ProductDAO productDao = new ProductDAO();
 		List<Product> allProducts = productDao.ListAllProducts();
 		PriceService priceService = new PriceService();
-		
-		  for(Product product :allProducts) {
-			  
-			  Price price = priceService.getPrice(product.getId()); 
-			  product.setPrice(price); 
-//			  System.out.println(product.toString());
-		  }
-		 
+
+		for (Product product : allProducts) {
+
+			Price price = priceService.getPrice(product.getId());
+			product.setPrice(price);
+		}
 
 		// get price
 		return allProducts;
 	}
 
-	
 	public void update(int id, Product newUpdate) throws ServiceException, ValidationException {
 		try {
 			ProductDAO productDao = new ProductDAO();
 			Productvalidator.validateUpdate(id, newUpdate);
 			productDao.update(id, newUpdate);
-			
+
 			PriceService priceservice = new PriceService();
-			int price =newUpdate.getPrice().getPrice();
-			
-			priceservice.updateProductPrice(id,price);
-			
+			int price = newUpdate.getPrice().getPrice();
+
+			priceservice.updateProductPrice(id, price);
+
 		} catch (DAOException e) {
 			e.printStackTrace();
 			throw new ServiceException(e);
 		}
 	}
-
 
 	/**
 	 * Deletes a product by its ID.
@@ -108,6 +104,7 @@ public class ProductService {
 			throw new ServiceException(e);
 		}
 	}
+
 	public Product findById(int newId) throws ServiceException, ValidationException {
 		Product product = null;
 		ProductDAO productDao = null;
@@ -115,13 +112,12 @@ public class ProductService {
 			productDao = new ProductDAO();
 			Productvalidator.validateId(newId);
 			product = productDao.findById(newId);
-			
-			
+
 //			Price price = new Price();
 //			price.getPrice();
 //			PriceService prser = new PriceService();
 //			prser.getPrice(newId);
-			 Price price = new PriceService().getPrice(newId); 
+			Price price = new PriceService().getPrice(newId);
 			product.setPrice(price);
 //		  System.out.println(price);
 
@@ -141,17 +137,30 @@ public class ProductService {
 	 * @throws ValidationException If the provided category ID is not valid.
 	 */
 	public List<Product> listAllTheProductsByCategoryId(int id) throws ServiceException, ValidationException {
-		List<Product> product = null;
-		ProductDAO productDao = null;
+
+		/*
+		 * System.out.println("in service");
+		 */
+		List<Product> product = new ArrayList<>();
+
 		try {
-			productDao = new ProductDAO();  
+			ProductDAO productDao = new ProductDAO();
 			product = productDao.listAllTheProductsByCategoryId(id);
-		} catch (DAOException e) {
+			PriceService priceService = new PriceService();
+
+			for (Product product1 : product) {
+
+				Price price = priceService.getPrice(product1.getId());
+				product1.setPrice(price);
+				 System.out.println(price);
+
+			}
+			  } catch (DAOException e) {
 			e.printStackTrace();
 			throw new ServiceException(e);
 		}
+
 		return product;
 	}
-	
 
 }

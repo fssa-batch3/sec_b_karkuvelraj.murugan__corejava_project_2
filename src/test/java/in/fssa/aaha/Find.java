@@ -2,7 +2,10 @@ package in.fssa.aaha;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +27,9 @@ public class Find {
 		try {
 			allProducts = productService.ListAllProducts();
 
-			System.out.println(allProducts);
+			for(Product product : allProducts) {
+				System.out.println(product);
+			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -34,9 +39,15 @@ public class Find {
 	@Test
 	public void FindAllProductByCategoryId() {
 		ProductService productService = new ProductService();
-
-		assertDoesNotThrow(() -> {
-			System.out.println(productService.listAllTheProductsByCategoryId(1));
+		/* productList = null; */
+		
+		assertDoesNotThrow(() -> {	
+			
+			List<Product> productList = productService.listAllTheProductsByCategoryId(2);
+			
+			for(Product product : productList) {
+				System.out.println(product);
+			}
 		});
 	}
 

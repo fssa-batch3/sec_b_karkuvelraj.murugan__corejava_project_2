@@ -33,10 +33,11 @@ public class Create {
 		ProductService productService = new ProductService();
 
 		Product product = new Product();
-		product.setName("DOFVE");
+		product.setName("OFVE");
 		product.setCategory_id(1);
 		product.setDescription("Men  Fit Solid Casual Shit");
 		product.setActive(true);
+		product.setSize("S");
 		PriceService priceService = new PriceService();
 		Price price = new Price();
 		price.setPrice(200);

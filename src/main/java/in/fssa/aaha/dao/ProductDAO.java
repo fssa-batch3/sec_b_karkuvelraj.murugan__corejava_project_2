@@ -24,12 +24,16 @@ public class ProductDAO implements ProductInterface {
 		ResultSet rs = null;
 		int productId = 0;
 		try {
-			String query = "INSERT INTO product (name,description,category_id) VALUES (?,?,?)";
+			String query = "INSERT INTO product (name,description,category_id,size,image) VALUES (?,?,?,?,?)";
 			conn = ConnectionUtil.getConnection();
 			ps = conn.prepareStatement(query, java.sql.Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, newProduct.getName());
 			ps.setString(2, newProduct.getDescription());
 			ps.setInt(3, newProduct.getCategory_id());
+			ps.setString(4, newProduct.getSize());
+			ps.setString(5, newProduct.getImage());
+
+			
 			ps.executeUpdate();
 
 			rs = ps.getGeneratedKeys();
@@ -197,9 +201,7 @@ public class ProductDAO implements ProductInterface {
 			ps = conn.prepareStatement(query);
 			ps.setInt(1, categoryId);
 			rs = ps.executeQuery();
-			if (!rs.next()) {
-				throw new DAOException("Invalid Category id");
-			}
+
 			while (rs.next()) {
 				Product product = new Product();
 				product.setId(rs.getInt("id"));
@@ -208,6 +210,7 @@ public class ProductDAO implements ProductInterface {
 				product.setDescription(rs.getString("description"));
 				product.setCategory_id(rs.getInt("category_id"));
 				ProductList.add(product);
+				System.out.println(product);
 			}
 
 		} catch (SQLException e) {
@@ -217,7 +220,7 @@ public class ProductDAO implements ProductInterface {
 		} finally {
 			ConnectionUtil.close(conn, ps, rs);
 		}
-      System.out.println(ProductList);
+
 	return ProductList;
 
 	}
