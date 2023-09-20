@@ -1,5 +1,7 @@
 package in.fssa.aaha.model;
 
-public class User {
+public class User extends UserEntity {
+
+
 
 }

@@ -33,11 +33,12 @@ public class Create {
 		ProductService productService = new ProductService();
 
 		Product product = new Product();
-		product.setName("OFVE");
+		product.setName("T-SHIRT NIKE");
 		product.setCategory_id(1);
 		product.setDescription("Men  Fit Solid Casual Shit");
 		product.setActive(true);
 		product.setSize("S");
+		product.setImage("https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/q/i/c/s-23069808-here-now-original-imagsw8z47cut2fs.jpeg?q=70");
 		PriceService priceService = new PriceService();
 		Price price = new Price();
 		price.setPrice(200);

@@ -1,4 +1,5 @@
 package in.fssa.aaha.dao;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.fssa.aaha.exception.DAOException;
-import in.fssa.aaha.exception.ValidationException;
 import in.fssa.aaha.interfaces.CategoryInterface;
 import in.fssa.aaha.model.Category;
 import in.fssa.aaha.util.ConnectionUtil;
