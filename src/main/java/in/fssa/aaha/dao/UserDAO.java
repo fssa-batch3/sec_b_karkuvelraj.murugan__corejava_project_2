@@ -324,6 +324,7 @@ public class UserDAO {
 			if (rs.next()) {
 				user = rs.getInt("id");
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DAOException(e.getMessage());
